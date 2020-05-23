@@ -1,0 +1,168 @@
+body {
+    background-color: rgb(237, 237, 237);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.container {
+    padding: 45px 25px 20px;
+    width: 1100px;
+    background-color: white;
+    margin: 30px auto;
+}
+
+.welcome {
+    display: flex;
+    justify-content: center;
+}
+
+.header-phrase {
+    font-size: 41px;
+}
+
+.row-name {
+    margin-right: 24px;
+}
+
+td > span {
+    font-size: 23px;
+}
+
+button {
+    cursor: pointer;
+}
+
+input:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+input[type="image"] {
+    width: 50px;
+    height: auto;
+}
+
+input[type="password"],
+input[type="text"] {
+    font-size: 20px;
+}
+
+.table-form {
+    table-layout: fixed;
+    width: 100%;
+    padding: 30px;
+}
+
+td {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.logout {
+    text-align: right;
+}
+
+.feedback-header,
+.feedback-form-container {
+    display: flex;
+    justify-content: center;
+}
+
+.feedback-header {
+    padding: 30px;
+    font-size: 23px;
+}
+
+#feedback > div {
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+}
+
+textarea {
+    font-size: 20px;
+    padding: 10px;
+    margin-bottom: -5px;
+    resize: none;
+}
+
+input, textarea {
+    font-family: "Segoe UI", sans-serif;
+}
+
+button {
+    margin-top: 10px;
+    background-color: rgb(31, 67, 113);
+    color: white;
+    border: 5px solid whitesmoke;
+    padding: 7px 25px;
+    font-size: 17px;
+}
+
+button:active {
+    background-color: rgb(31, 49, 75);
+}
+
+.to-main-page {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center
+}
+
+.custom-row {
+    width: 50px;
+    height: 35px;
+}
+
+.block {
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.05) 0 0 3px 1px;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+.table-change {
+    width: 63%;
+}
+
+/* Popup container */
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+    visibility: hidden;
+    width: 260px;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    top: -2%;
+    left: 175%;
+    margin-left: -80px;
+    z-index: 100;
+}
+
+.popup .show {
+    visibility: visible;
+    animation: fadeIn 1s;
+}
+
+@-webkit-keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+}

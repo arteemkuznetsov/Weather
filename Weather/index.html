@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Прогноз Погоды и Погодные условия</title>
+    <link href="css/weather.css" rel="stylesheet">
+    <link href="css/footer.css" rel="stylesheet">
+    <link href="pic/logo.png" rel="icon" type="image/icon">
+    <script src="js-scripts/weather.js"></script>
+    <script src="js-scripts/footer-functions.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.css" rel="stylesheet"/>
+</head>
+<body onload="fillOldWeatherData(); requestWeather(currentCity)">
+<header id="top-header">
+    <table class="top-header-table">
+        <tr class="top-header-row">
+            <td class="top-header-data">
+                <div class="logo-href">
+                    <a href="index.html">
+                        <span class="logo-container">
+                            <img alt="Logo Info" class="logo-img" src="pic/logo.png">
+                        </span>
+                    </a>
+                </div>
+            </td>
+            <td class="top-header-data">
+                <form class="search">
+                    <label><input class="input" id="input"
+                                  oninput="inputPredict(this.value);"
+                                  placeholder="Поиск по городу или индексу"
+                                  type="text"></label>
+                    <label><input class="submit" name=""
+                                  onclick="
+                                  if (document.getElementById('input').value.length > 0)
+                                      currentCity = document.getElementById('input').value;
+                                  requestWeather(currentCity);
+                                  " type="button"
+                                  value=""></label>
+                </form>
+            </td>
+            <td class="top-header-data" style="text-align: right">
+                <div class="region-area">
+                    <button id="region-changer"
+                            onclick="
+                        rotateArrow(0);
+                        if (!isMetricModalVisible) {
+                            showModal('modal-metric');
+                            isMetricModalVisible = true;
+                        }
+                        else if (isMetricModalVisible) {
+                            hideModal('modal-metric');
+                            isMetricModalVisible = false;
+                        }
+                        ">
+                    <span class="region-icon"><img alt="Globe" class="region-img" src="pic/region.svg"
+                                                   style="margin-right: 10px"></span>
+                        <span class="region-degrees" id="ISO-3166-1-code" style="margin-right: 10px"> </span>
+                        <span class="region-degrees" style="margin-right: 10px">I</span>
+                        <span class="region-degrees" id="degrees" style="margin-right: 10px">°C</span>
+                        <img alt="Arrow" class="down-arrow-img" src="pic/down-arrow.svg">
+                    </button>
+                </div>
+            </td>
+        </tr>
+    </table>
+</header>
+<div id="modal-predict">
+    <div class="modal-background">
+        <div class="modal-window-predict" id="predict-list">
+        </div>
+    </div>
+</div>
+<div id="modal-metric">
+    <div class="modal-background">
+        <div class="modal-window-metric">
+            <div class="modal-window-container-metric">
+                <ul>
+                    <li>
+                        <button class="degree-button" id="fahrenheit" onclick="
+                            if (this.className !== 'degree-button degree-button-selected') {
+                                setInner('degrees', '°F');
+                                this.classList.toggle('degree-button-selected');
+                                document.getElementById('celsius').classList.remove('degree-button-selected');
+                                requestWeather(currentCity);
+                            }"
+                                style="margin-right: 8px">
+                            <span>°F</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="degree-button degree-button-selected" id="celsius" onclick="
+                            if (this.className !== 'degree-button degree-button-selected') {
+                                setInner('degrees', '°C');
+                                this.classList.toggle('degree-button-selected');
+                                document.getElementById('fahrenheit').classList.remove('degree-button-selected');
+                                requestWeather(currentCity);
+                            }">
+                            <span>°C</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<header id="middle-header">
+    <span class="weather-briefly">
+        <span class="weather-briefly-icon">
+            <img alt="Weather" id="weather-briefly-img" src="">
+        </span>
+        <span id="weather-briefly-degrees"> </span>
+        <span id="weather-briefly-city"> </span>
+    </span>
+    <span class="account-area"
+          onmousedown="this.style.backgroundColor = 'rgba(255, 255, 255, 0.05)'"
+          onmouseup="this.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'">
+            <a href="signin.html" id="account-href">Личный кабинет</a>
+    </span>
+
+</header>
+<header id="bottom-header">
+    <nav>
+        <ul class="menu">
+            <li class="date-range"><a href="#">Сегодня</a></li>
+            <li class="date-range"><a href="#">Почасовой прогноз</a></li>
+            <li class="date-range"><a href="#">На 10 дней</a></li>
+            <li class="date-range"><a href="#">Выходные</a></li>
+            <li class="date-range"><a href="#">На месяц</a></li>
+            <li class="more"
+                onmouseout="rotateArrow(1)"
+                onmouseover="rotateArrow(1)">
+                <span>Еще</span>
+                <img alt="Arrow" class="down-arrow-img" src="pic/down-arrow.svg" style="margin-left: 5px">
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="global-container" onclick="
+hideModal('modal-metric');
+isMetricModalVisible = false;
+hideModal('modal-predict');
+let arrow = document.getElementsByClassName('down-arrow-img')[0];
+    if (arrow.style.transform !== '' || arrow.style.transform !== 'rotate(0deg)')
+        arrow.style.transform = 'rotate(0deg)';">
+    <div class="container">
+        <div id="section-weather">
+            <div class="block" id="weather-block">
+                <header class="block-header">
+            <span id="city" style="color: white; line-height: 21px; text-align: center; text-transform: uppercase">
+
+            </span>
+                    <p style="color: hsla(0,0%,100%,.5);">
+                        <span>по состоянию на </span>
+                        <span id="time"> </span>
+                    </p>
+                </header>
+                <div class="weather-block-info">
+                    <div class="block-line">
+                        <div class="block-briefly">
+                            <div id="block-degrees"></div>
+                            <div class="block-weather-phrase" id="block-weather-phrase"></div>
+                        </div>
+                        <div class="block-icon">
+                            <img alt="Weather" class="block-img" id="current-weather-block-img"
+                                 src="">
+                        </div>
+                    </div>
+                    <div class="block-feels">
+                        <span class="block-feels-phrase">ощущается как </span>
+                        <span id="block-feels-phrase"> </span>
+                    </div>
+                    <div class="block-cloudiness">
+                        <span class="block-cloudiness-phrase">Облачность </span>
+                        <span id="cloudiness"> </span>
+                    </div>
+                </div>
+
+            </div>
+            <div id="right-now">
+                <table class="right-now-table">
+                    <caption>ПРЯМО СЕЙЧАС</caption>
+                    <tbody>
+                    <tr class="right-now-row">
+                        <th class="right-now-header">Ветер</th>
+                        <td class="right-now-data">
+                            <span id="now-wind"> </span>
+                        </td>
+                    </tr>
+                    <tr class="right-now-row overline">
+                        <th class="right-now-header">Влажность</th>
+                        <td class="right-now-data">
+                            <span id="now-humidity"> </span>
+                        </td>
+                    </tr>
+                    <tr class="right-now-row overline">
+                        <th class="right-now-header">Отклонение</th>
+                        <td class="right-now-data">
+                            <span id="now-deviation"> </span>
+                        </td>
+                    </tr>
+                    <tr class="right-now-row overline">
+                        <th class="right-now-header">Давление</th>
+                        <td class="right-now-data">
+                            <span id="now-pressure"> </span>
+                        </td>
+                    </tr>
+                    <tr class="right-now-row overline">
+                        <th class="right-now-header">Видимость</th>
+                        <td class="right-now-data">
+                            <span id="now-visibility"> </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="block" id="sunrise-block">
+                <header class="block-header" style="margin-bottom: 16px">
+            <span class="sunrise" style="color: white; line-height: 21px; text-align: center;">
+                ДЛИТЕЛЬНОСТЬ СВЕТОВОГО ДНЯ
+            </span>
+                </header>
+                <div class="weather-block-info">
+                    <div class="block-line">
+                        <div class="block-briefly">
+                            <div id="sunrise-time"></div>
+                            <div class="block-weather-phrase">РАССВЕТ</div>
+                        </div>
+                        <div class="block-icon">
+                            <img alt="Sun" class="block-img" id="sunrise-block-img" src="pic/sun.svg">
+                        </div>
+                    </div>
+                    <div class="block-feels">
+                        <span class="block-feels-phrase">Продолжительность дня </span>
+                        <span id="day-duration"> </span>
+                    </div>
+                    <div class="block-line">
+                        <div class="block-briefly" style="padding-top: 8px">
+                            <div id="sunset-time"></div>
+                            <div class="block-weather-phrase">ЗАКАТ</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-more-info">
+            <div id="block-widget">
+                <header class="widget-header">
+                    <h2>ПОСЛЕДУЮЩИЕ 24 ЧАСА</h2>
+                </header>
+                <div class="widget">
+                    <div class="widget-block-outer">
+                        <div class="widget-block widget-block-selected" id="widget-block-1" onclick="selectBlock(1)">
+                            <div class="widget-block-inner">
+                                <div class="day-part" id="day-part-0"></div>
+                                <div class="day-part-icon">
+                                    <img alt="Weather" class="day-part-img" id="day-part-img-0" src="">
+                                </div>
+                                <div class="day-part-temp" id="day-part-temp-0"></div>
+                                <div class="day-part-humidity">
+                            <span class="humidity-icon">
+                                <img alt="Drop" class="drop-img" src="pic/drop.svg">
+                            </span>
+                                    <span id="day-part-humidity-0"> </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="triangle" id="triangle-1" style="opacity: 1"></div>
+                    </div>
+                    <div class="widget-block-outer">
+                        <div class="widget-block" id="widget-block-2" onclick="selectBlock(2)">
+                            <div class="widget-block-inner">
+                                <div class="day-part" id="day-part-1"></div>
+                                <div class="day-part-icon">
+                                    <img alt="Weather" class="day-part-img" id="day-part-img-1" src="">
+                                </div>
+                                <div class="day-part-temp" id="day-part-temp-1"></div>
+                                <div class="day-part-humidity">
+                            <span class="humidity-icon">
+                                <img alt="Drop" class="drop-img" src="pic/drop.svg">
+                            </span>
+                                    <span id="day-part-humidity-1"> </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="triangle" id="triangle-2"></div>
+                    </div>
+                    <div class="widget-block-outer">
+                        <div class="widget-block" id="widget-block-3" onclick="selectBlock(3)">
+                            <div class="widget-block-inner">
+                                <div class="day-part" id="day-part-2"></div>
+                                <div class="day-part-icon">
+                                    <img alt="Weather" class="day-part-img" id="day-part-img-2" src="">
+                                </div>
+                                <div class="day-part-temp" id="day-part-temp-2"></div>
+                                <div class="day-part-humidity">
+                            <span class="humidity-icon">
+                                <img alt="Drop" class="drop-img" src="pic/drop.svg">
+                            </span>
+                                    <span id="day-part-humidity-2"> </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="triangle" id="triangle-3"></div>
+                    </div>
+                    <div class="widget-block-outer">
+                        <div class="widget-block" id="widget-block-4" onclick="selectBlock(4)">
+                            <div class="widget-block-inner">
+                                <div class="day-part" id="day-part-3"></div>
+                                <div class="day-part-icon">
+                                    <img alt="Weather" class="day-part-img" id="day-part-img-3" src="">
+                                </div>
+                                <div class="day-part-temp" id="day-part-temp-3"></div>
+                                <div class="day-part-humidity">
+                            <span class="humidity-icon">
+                                <img alt="Drop" class="drop-img" src="pic/drop.svg">
+                            </span>
+                                    <span id="day-part-humidity-3"> </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="triangle" id="triangle-4"></div>
+                    </div>
+                    <div class="widget-block-outer">
+                        <div class="widget-block" id="widget-block-5" onclick="selectBlock(5)">
+                            <div class="widget-block-inner">
+                                <div class="day-part" id="day-part-4"></div>
+                                <div class="day-part-icon">
+                                    <img alt="Weather" class="day-part-img" id="day-part-img-4" src="">
+                                </div>
+                                <div class="day-part-temp" id="day-part-temp-4"></div>
+                                <div class="day-part-humidity">
+                            <span class="humidity-icon">
+                                <img alt="Drop" class="drop-img" src="pic/drop.svg">
+                            </span>
+                                    <span id="day-part-humidity-4"> </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="triangle" id="triangle-5"></div>
+                    </div>
+                </div>
+                <div class="block-widget-footer">
+                    <div class="description" id="details-description"></div>
+                    <ul class="details-list">
+                        <li class="detail">
+                        <span class="detail-icon">
+                            <img alt="Wind" class="detail-img" src="pic/wind.svg">
+                            <span class="detail-description">
+                                <span class="detail-description-header">ВЕТЕР</span>
+                                <span class="detail-description-bottom" id="detail-wind"> </span>
+                            </span>
+                        </span>
+                        </li>
+                        <li class="detail">
+                        <span class="detail-icon">
+                            <img alt="Water" class="detail-img" src="pic/water.svg">
+                            <span class="detail-description">
+                                <span class="detail-description-header">ВЛАЖНОСТЬ</span>
+                                <span class="detail-description-bottom" id="detail-humidity"> </span>
+                            </span>
+                        </span>
+                        </li>
+                        <li class="detail">
+                        <span class="detail-icon">
+                            <img alt="Sun" class="detail-img" src="pic/cloud.svg">
+                            <span class="detail-description">
+                                <span class="detail-description-header">ОБЛАЧНОСТЬ</span>
+                                <span class="detail-description-bottom">
+                                    <span id="detail-cloudiness"> </span>
+                                </span>
+                            </span>
+                        </span>
+                        </li>
+                        <li class="detail">
+                        <span class="detail-icon">
+                            <img alt="Давление" class="detail-img" src="pic/pressure.svg">
+                            <span class="detail-description">
+                                <span class="detail-description-header">ДАВЛЕНИЕ</span>
+                                <span class="detail-description-bottom">
+                                    <span id="detail-pressure"> </span>
+                                </span>
+                            </span>
+                        </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="coord-block">
+                <header class="coord-block-header" style="line-height: 27px">
+                    <h2>МЕСТОПОЛОЖЕНИЕ</h2>
+                </header>
+                <div class="coord-block-content">
+                    <div class="coord-line">
+                        <div class="coord-info">
+                            <div class="coord-header">Широта</div>
+                            <div class="coord-lat-lon" id="latitude" style="margin-bottom: 10px"></div>
+                            <div class="coord-header">Долгота</div>
+                            <div class="coord-lat-lon" id="longitude"></div>
+                        </div>
+                        <div id="map"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="footer-content">
+        <section class="footer-row-1">
+            <div class="footer-row-1-logos">
+                <a href="https://weather.com/" target="_blank">
+                    <img alt="The Weather Channel" class="footer-logo" src="pic/footer%20logo/the-weather-channel.png"
+                         style="height: 60px">
+                </a>
+                <a href="https://openweathermap.org/" target="_blank">
+                    <img alt="OpenWeather" class="footer-logo" src="pic/footer%20logo/openweather.png">
+                </a>
+                <a href="https://www.mapbox.com/" target="_blank">
+                    <img alt="Mapbox" class="footer-logo" src="pic/footer%20logo/mapbox.png">
+                </a>
+            </div>
+            <section class="footer-row-1-social">
+                <h2 class="footer-row-1-header">Свяжитесь с нами</h2>
+                <div class="social-icons-block">
+                    <a href="https://github.com/arteemkuznetsov" target="_blank">
+                        <div class="social-img-circle"
+                             onmouseout="changeIconToBlack('github', this)"
+                             onmouseover="changeIconToBlue('github', this)"
+                             title="Познакомьтесь с другими проектами на GitHub">
+                            <img alt="Github" class="social-img" id="social-1" src="pic/social/github.svg">
+                        </div>
+                    </a>
+                    <a href="https://vk.com/arteemkuznetsov" target="_blank">
+                        <div class="social-img-circle"
+                             onmouseout="changeIconToBlack('vk', this)"
+                             onmouseover="changeIconToBlue('vk', this)"
+                             title="Подпишитесь в VK">
+                            <img alt="VK" class="social-img" id="social-2" src="pic/social/vk.svg">
+                        </div>
+                    </a>
+                    <a href="https://www.instagram.com/arteemkuznetsov/" target="_blank">
+                        <div class="social-img-circle"
+                             onmouseout="changeIconToBlack('instagram', this)"
+                             onmouseover="changeIconToBlue('instagram', this)"
+                             title="Следите за новостями в Instagram">
+                            <img alt="Instagram" class="social-img" id="social-3" src="pic/social/instagram.svg">
+                        </div>
+                    </a>
+                </div>
+            </section>
+        </section>
+        <section class="footer-row-2">
+            <div class="footer-links-list">
+                <a href="mailto:arteemkuznetsov@gmail.com?subject=Отзыв о сервисе Weather Forecast" class="a-custom">
+                    <strong class="footer-link">Отзыв</strong>
+                </a>
+                <a href="https://openweathermap.org/api" class="a-custom">
+                    <strong class="footer-link">Weather API</strong>
+                </a>
+            </div>
+        </section>
+        <section class="footer-row-3">
+            <div>
+                <p class="privacy">Дизайн сайта вдохновлен The Weather Channel. Проект был разработан исключительно в
+                    образовательных целях.</p>
+            </div>
+        </section>
+        <section class="footer-row-4">
+            <div>2020</div>
+        </section>
+    </div>
+</footer>
+</body>
+</html>

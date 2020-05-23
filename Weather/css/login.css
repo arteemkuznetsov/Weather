@@ -1,0 +1,140 @@
+body {
+    background-color: rgb(237, 237, 237);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.container {
+    padding: 7px;
+    width: 650px;
+    background-color: white;
+    margin: 30px auto;
+}
+
+header {
+    height: 129px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-section, .login-form, .form-center-elem {
+    display: flex;
+    justify-content: center;
+}
+
+.logo-section {
+    margin-top: 30px;
+}
+
+.logo-img {
+    border: 1px solid lightgray;
+    width: 180px;
+    height: auto;
+}
+
+.logo-phrase {
+    margin-left: 30px;
+    font-size: 65px;
+    font-weight: 600;
+}
+
+.login-phrase {
+    font-size: 41px;
+}
+
+form > div {
+    margin-bottom: 15px;
+}
+
+input {
+    font-size: 25px;
+    text-align: center;
+}
+
+input:focus {
+    outline: none;
+}
+
+.data-input {
+    padding: 8px;
+    border-radius: 20px;
+    background-color: rgb(232,240,254);
+    background-size: 20px;
+    background-position-x: 10px;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1), inset 0 1px 2px rgba(0,0,0,0.3);
+}
+
+:focus::placeholder {
+    color: transparent;
+    transition: 0.4s;
+}
+
+#login {
+    background-image: url("../pic/login/user.png");
+}
+
+#password, #password-repeat {
+    background-image: url("../pic/login/password.png");
+}
+
+form {
+    margin-bottom: 27px;
+}
+
+.login-btn {
+    background-color: rgb(31, 67, 113);
+    color: white;
+    border: 5px solid whitesmoke;
+    padding: 7px 25px;
+}
+
+.login-btn:active {
+    background-color: rgb(31, 49, 75);
+}
+
+.user-action, .user-action:visited {
+    color: rgb(66, 92, 134);
+}
+
+.user-action:active {
+    color: rgb(31, 49, 75);
+}
+
+#message {
+    color: darkred;
+}
+
+.shake {
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+@keyframes shake {
+    10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%, 80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%, 50%, 70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%, 60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+a {
+    text-decoration: none;
+}
+
+input[type="submit"] {
+    cursor: pointer;
+}

@@ -1,0 +1,636 @@
+* {
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background-color: rgb(237, 237, 237);
+}
+
+#top-header {
+    height: 83px;
+    width: 100%;
+    background-color: rgb(19, 52, 103);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-ul {
+    padding: 0;
+    list-style-type: none;
+    overflow: hidden;
+    margin-left: 15%;
+    margin-right: 15%;
+    white-space: nowrap;
+    min-width: 750px;
+}
+
+li {
+    display: inline;
+    box-sizing: border-box;
+    width: auto;
+}
+
+.logo-img {
+    width: 65px;
+    height: 65px;
+}
+
+.region-area, .logo-href {
+    width: 320px;
+}
+
+.search {
+    width: 500px;
+    position: relative;
+}
+
+.search input {
+    border: none;
+}
+
+.search .input {
+    width: 100%;
+    height: 38px;
+    caret-color: white;
+    text-align: center;
+    color: white;
+    padding: 8px 37px 9px 15px;
+    box-sizing: border-box;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1), inset 0 1px 2px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    background: rgb(66, 92, 134);
+    outline: none;
+    font-size: 15px;
+}
+
+::placeholder {
+    color: white;
+}
+
+.search .input::-ms-input-placeholder {
+    color: white;
+}
+
+:focus::placeholder {
+    color: transparent;
+    transition: 0.4s;
+}
+
+.search .submit {
+    position: absolute;
+    top: 0;
+    right: 5px;
+    width: 37px;
+    height: 100%;
+    cursor: pointer;
+    background: url('../pic/search.svg') 50% no-repeat;
+    background-size: 65%;
+    opacity: 0.5;
+}
+
+.search .submit:hover {
+    opacity: 0.8;
+}
+
+.region-icon {
+    box-sizing: border-box;
+    align-items: center;
+}
+
+.region-img {
+    width: 24px;
+    height: auto;
+    vertical-align: top; /* чтобы изображение находилось на одном уровне с последнующим текстом */
+}
+
+.region-degrees {
+    color: white;
+}
+
+.down-arrow-img {
+    width: 14px;
+    height: auto;
+    vertical-align: middle;
+}
+
+button:active, button:focus,
+.search .submit:active, .submit:focus {
+    outline: none;
+}
+
+#region-changer {
+    background-color: rgba(255, 255, 255, 0);
+    border-width: 0;
+    cursor: pointer;
+    align-items: center;
+    font-size: 16px;
+}
+
+#modal-metric, #modal-predict {
+    display: none;
+}
+
+.modal-background {
+    line-height: 24px;
+    width: 100%;
+    position: absolute;
+    opacity: 1;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+}
+
+.modal-window-metric {
+    background: white;
+    box-shadow: 0 2px 12px 0 rgba(43, 43, 43, 0.6);
+    height: 82px;
+    width: 1340px;
+}
+
+.modal-window-predict {
+    background: white;
+    box-shadow: 0 2px 12px 0 rgba(43, 43, 43, 0.6);
+    border-radius: 6px;
+    margin-top: -13px;
+    width: 500px;
+    padding: 8px 0;
+}
+
+.predicted-city {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 5px 20px;
+    line-height: 24px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.predicted-city:hover {
+    color: #1B4DE4;
+}
+
+.modal-window-container-metric {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: inherit;
+}
+
+.modal-window-container-metric > ul {
+    margin-right: 2%;
+}
+
+.degree-button, .degree-button-selected {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+    outline: none;
+    border-radius: 50%;
+    border-width: 0;
+    cursor: pointer;
+    box-shadow: 0 0 4px -1px rgba(0, 0, 0, 0.75);
+}
+
+.degree-button {
+    background-color: white;
+    border-color: rgb(111, 117, 133);
+}
+
+.degree-button-selected {
+    background-color: rgb(19, 52, 103);
+    color: white;
+}
+
+#middle-header, #bottom-header {
+    height: 41px;
+    width: 100%;
+    background-color: rgb(66, 92, 133);
+}
+
+.account-area {
+    position: absolute;
+    right: 17%;
+    width: 120px;
+    height: 27px;
+    margin-top: 0.5em;
+    white-space: nowrap;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+#account-href {
+    display: flex;
+    justify-content: center;
+    line-height: 27px;
+}
+
+#bottom-header {
+    background-color: rgb(12, 31, 62);
+}
+
+.weather-briefly {
+    position: absolute;
+    left: 17%;
+    height: 27px;
+    margin-top: 0.5em;
+    white-space: nowrap;
+    line-height: 18px;
+}
+
+#weather-briefly-img {
+    width: 27px;
+    height: auto;
+    vertical-align: middle;
+}
+
+#middle-header, #bottom-header,
+.date-range,
+.more {
+    font-size: 13px;
+    color: white;
+    white-space: nowrap;
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+}
+
+.date-range, .more {
+    margin-top: 12px;
+    margin-right: 125px;
+}
+
+.date-range:hover {
+    border-bottom: 2px solid;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.more {
+    cursor: pointer;
+}
+
+.container {
+    overflow: hidden;
+    padding: 7px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1170px;
+    background-color: white;
+    margin-bottom: 20px;
+}
+
+#section-weather {
+    display: flex;
+    box-sizing: border-box;
+    font-size: 14px;
+    margin-bottom: 24px;
+}
+
+
+.block {
+    width: 578px;
+    height: 348px;
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 19px;
+}
+
+#weather-block {
+    background: linear-gradient(0deg, rgb(85, 167, 212) 0%, rgb(59, 88, 202) 100%);
+}
+
+.block-header {
+    text-align: center;
+    padding-bottom: 12px;
+}
+
+#right-now {
+    margin-left: 10px;
+    margin-bottom: 0;
+    padding: 13px;
+}
+
+.right-now-table {
+    width: 116px;
+    height: 100%;
+}
+
+caption {
+    font-size: 17px;
+    font-weight: 700;
+    text-align: left;
+}
+
+.right-now-header {
+    display: block;
+    padding-top: 8px;
+}
+
+.overline {
+    border-top: 1px solid rgb(57, 57, 57);
+}
+
+.right-now-data {
+    padding-bottom: 5px;
+}
+
+.right-now-row {
+    text-align: left;
+    display: block;
+    line-height: 18px;
+}
+
+.block-line > div {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.block-img {
+    height: 50px;
+    width: 50px;
+    background-color: rgba(255, 255, 255, 0.3);
+    padding: 5px;
+    user-select: none;
+}
+
+.block-line {
+    line-height: 21px;
+    width: inherit;
+    font-size: 16px;
+}
+
+.weather-block-info {
+    color: white;
+}
+
+#block-degrees, #sunrise-time, #sunset-time {
+    font-size: 40px;
+    line-height: 40px;
+}
+
+.block-weather-phrase {
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+.block-icon {
+    float: right;
+}
+
+.block-feels {
+    padding-top: 5px;
+    line-height: 21px;
+    font-size: 15px;
+}
+
+.block-cloudiness {
+    font-size: 15px;
+}
+
+#sunrise-block {
+    background: linear-gradient(0deg, rgba(118, 167, 227, 1) 0%, rgba(31, 67, 113, 1) 100%);
+}
+
+#section-more-info {
+    width: 100%;
+    height: 433px;
+}
+
+#section-more-info > div {
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.05) 0 0 3px 1px;
+    box-sizing: border-box;
+    padding: 10px;
+    height: inherit;
+    vertical-align: top;
+    float: left;
+}
+
+#block-widget {
+    width: 830px;
+}
+
+.widget-header, .coord-block-header {
+    padding-bottom: 10px;
+    box-sizing: border-box;
+}
+
+h2 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.widget {
+    display: flex;
+    height: 283px;
+}
+
+.widget-block-outer {
+    display: block;
+}
+
+.widget-block,
+.widget-block-selected {
+    display: block;
+    padding: 25px 8px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.widget-block {
+    height: inherit;
+    width: 127px;
+    transition: 0.3s linear;
+}
+
+.widget-block-selected {
+    height: inherit;
+    width: 222px;
+}
+
+#widget-block-1 {
+    background-color: rgb(31, 67, 113);
+}
+
+#widget-block-2 {
+    background-color: rgb(41, 98, 169);
+}
+
+#widget-block-3 {
+    background-color: rgb(52, 123, 213);
+}
+
+#widget-block-4 {
+    background-color: rgb(96, 154, 225);
+}
+
+#widget-block-5 {
+    background-color: rgb(118, 167, 227);
+}
+
+.widget-block-inner {
+    color: white;
+    font-size: 14px;
+    line-height: 18px;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.day-part {
+    margin: auto;
+    min-height: 55px;
+    max-width: 65px;
+}
+
+.day-part-icon {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    width: 45px;
+    height: auto;
+    margin: auto;
+}
+
+.day-part-img {
+    height: 38px;
+    width: auto;
+}
+
+.day-part-temp {
+    margin-top: 25px;
+    margin-bottom: 10px;
+    font-size: 32px;
+    line-height: 42px;
+}
+
+.day-part-humidity {
+    font-size: 13px;
+}
+
+.drop-img {
+    height: 13px;
+    width: auto;
+    vertical-align: middle;
+}
+
+.triangle {
+    width: 0;
+    height: 0;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+    border-top: 16px solid;
+    margin: auto;
+    opacity: 0;
+}
+
+#triangle-1 {
+    color: rgb(31, 67, 113);
+}
+
+#triangle-2 {
+    color: rgb(41, 98, 169);
+}
+
+#triangle-3 {
+    color: rgb(52, 123, 213);
+}
+
+#triangle-4 {
+    color: rgb(96, 154, 225);
+}
+
+#triangle-5 {
+    color: rgb(118, 167, 227);
+}
+
+.block-widget-footer {
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.details-list {
+    margin-left: 0;
+    margin-top: 20px;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+
+    padding: 0;
+    overflow: hidden;
+    margin-right: 15%;
+    white-space: nowrap;
+    min-width: 750px;
+}
+
+.detail {
+    height: 46px;
+    list-style: none;
+    min-height: 25px;
+    padding: 4px 0;
+    float: left;
+}
+
+.detail-img, .detail-arrow-img {
+    width: 16px;
+    height: auto;
+    vertical-align: middle;
+}
+
+.detail-img {
+    padding-right: 5px;
+}
+
+.detail-description {
+    text-align: left;
+    line-height: 18px;
+}
+
+.detail-description-header {
+    font-weight: 700;
+}
+
+.detail-description-bottom {
+    display: block;
+    padding-left: 25px;
+}
+
+.coord-block {
+    margin-left: 7px;
+    width: 333px;
+    line-height: 18px;
+}
+
+.coord-block-content {
+    height: 283px;
+    font-size: 14px;
+    display: block;
+}
+
+.coord-line {
+    display: block;
+}
+
+.coord-info {
+    display: block;
+}
+
+.coord-header {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+#map {
+    margin-top: 15px;
+    box-sizing: border-box;
+    display: block;
+    width: inherit;
+    height: 260px;
+}
