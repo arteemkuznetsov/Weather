@@ -1,7 +1,7 @@
-let currentCity = 'Новосибирск';
+let defaultCity = 'Новосибирск';
 let isMetricModalVisible = false;
-let openWeatherMapApiKey = '';
-let mapBoxGLAccessToken = '';
+let openWeatherMapApiKey = '2f31698e2f03634b2c98674803c9e7f7';
+let mapBoxGLAccessToken = 'pk.eyJ1IjoiYXJ0ZWVta3V6bmV0c292IiwiYSI6ImNrOGtpYzV1ejAxcWwzbXF3dDB1OTQ0bzEifQ.mxY67KUaSkCovBnH72wRRA';
 
 function fillOldWeatherData() {
     fetch('json/current.json')

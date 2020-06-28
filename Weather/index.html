@@ -11,7 +11,7 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.css" rel="stylesheet"/>
 </head>
-<body onload="fillOldWeatherData(); requestWeather(currentCity)">
+<body onload="fillOldWeatherData(); requestWeather(defaultCity)">
 <header id="top-header">
     <table class="top-header-table">
         <tr class="top-header-row">
@@ -33,8 +33,8 @@
                     <label><input class="submit" name=""
                                   onclick="
                                   if (document.getElementById('input').value.length > 0)
-                                      currentCity = document.getElementById('input').value;
-                                  requestWeather(currentCity);
+                                      defaultCity = document.getElementById('input').value;
+                                  requestWeather(defaultCity);
                                   " type="button"
                                   value=""></label>
                 </form>
@@ -82,7 +82,7 @@
                                 setInner('degrees', '°F');
                                 this.classList.toggle('degree-button-selected');
                                 document.getElementById('celsius').classList.remove('degree-button-selected');
-                                requestWeather(currentCity);
+                                requestWeather(defaultCity);
                             }"
                                 style="margin-right: 8px">
                             <span>°F</span>
@@ -94,7 +94,7 @@
                                 setInner('degrees', '°C');
                                 this.classList.toggle('degree-button-selected');
                                 document.getElementById('fahrenheit').classList.remove('degree-button-selected');
-                                requestWeather(currentCity);
+                                requestWeather(defaultCity);
                             }">
                             <span>°C</span>
                         </button>

@@ -13,10 +13,10 @@ function signIn() {
                         if (data['status'] !== 'fail') {
                             switch (data['role']) {
                                 case 'user':
-                                    document.location.href = 'user.phtml';
+                                    document.location.href = 'user.php';
                                     break;
                                 case 'admin':
-                                    document.location.href = 'admin.phtml';
+                                    document.location.href = 'admin.php';
                                     break;
                             }
                         } else {
